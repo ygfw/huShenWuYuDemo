@@ -1,4 +1,4 @@
-# Huyao Web Game
+# HuShen Web Game
 
 一般向二游狐神物语展示 Demo，前端为静态页面，后端为 Spring Boot + MySQL。
 
