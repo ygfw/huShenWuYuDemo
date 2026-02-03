@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>狐神物语</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app">
+    <div class="stage">
+      <div class="top-left" data-action="profile">
+        <div class="avatar"></div>
+        <div class="player">
+          <div class="name">浣月</div>
+          <div class="level-row">
+            <span class="level">Lv.1</span>
+            <div class="xp-bar">
+              <div class="xp-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resources top-right">
+        <div class="resource" data-action="stamina">
+          <span class="label">体力</span>
+          <span class="value" id="res-stamina">999/120</span>
+          <button class="add" data-action="add-stamina">+</button>
+        </div>
+        <div class="resource" data-action="gold">
+          <span class="label">金币</span>
+          <span class="value" id="res-gold">505500</span>
+          <button class="add" data-action="add-gold">+</button>
+        </div>
+        <div class="resource" data-action="gems">
+          <span class="label">玉</span>
+          <span class="value" id="res-gems">2490</span>
+          <button class="add" data-action="add-gems">+</button>
+        </div>
+      </div>
+
+      <aside class="left-menu">
+        <button class="menu-item" data-action="shop">
+          <img class="menu-icon" src="images/leftSide/shop.jpg" alt="" />
+          <span>商店</span>
+        </button>
+        <button class="menu-item" data-action="task">
+          <img class="menu-icon" src="images/leftSide/task.jpg" alt="" />
+          <span>任务</span>
+        </button>
+        <button class="menu-item" data-action="mail">
+          <img class="menu-icon" src="images/leftSide/email.jpg" alt="" />
+          <span>邮件</span>
+        </button>
+        <button class="menu-item" data-action="settings">
+          <img class="menu-icon" src="images/leftSide/set.jpg" alt="" />
+          <span>设定</span>
+        </button>
+      </aside>
+
+      <main class="center-stage">
+        <div class="character">
+          <img class="illustration" src="images/character1.jpg" alt="" />
+          <div class="speech">
+            想歇一会吗？投入咪的怀抱吧，顺便讲讲今日趣事。
+          </div>
+        </div>
+      </main>
+
+      <section class="right-board">
+        <div class="banner" data-action="event-center">
+          <div class="banner-title">活动中心</div>
+          <div class="banner-sub">限定活动正在进行</div>
+        </div>
+        <div class="event-grid">
+          <button class="event-card" data-action="gacha">召唤</button>
+          <button class="event-card" data-action="team">编队</button>
+          <button class="event-card" data-action="journey">启程</button>
+          <button class="event-card" data-action="dress">装扮</button>
+          <button class="event-card" data-action="gallery">图鉴</button>
+          <button class="event-card" data-action="canteen">食堂</button>
+        </div>
+        <div class="notice small" data-action="countdown">
+          <div class="notice-title">活动倒计时</div>
+          <div class="countdown" id="countdown">02:14:32</div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottombar">
+      <button class="tab active" data-action="home">主页</button>
+      <button class="tab" data-action="leisure">休闲</button>
+      <button class="tab" data-action="guild">协会</button>
+      <button class="tab" data-action="role">角色</button>
+    </nav>
+
+    <section class="character-page" id="character-page" aria-hidden="true">
+      <div class="character-page-header">
+        <button class="back-button" data-action="back-home">返回</button>
+        <div class="character-title">角色</div>
+      </div>
+      <div class="character-grid" data-base="images/character/character" data-ext=".jpg"></div>
+    </section>
+
+    <section class="gallery-page" id="gallery-page" aria-hidden="true">
+      <div class="gallery-page-header">
+        <button class="back-button" data-action="back-gallery">返回</button>
+        <div class="character-title">图鉴</div>
+      </div>
+      <div class="character-grid" id="gallery-grid"></div>
+    </section>
+
+    <section class="summon-page" id="summon-page" aria-hidden="true">
+      <div class="summon-left">
+        <button class="back-button" data-action="back-summon">返回</button>
+        <div class="summon-title">召唤</div>
+        <div class="summon-tabs">
+          <button class="summon-tab active" data-pool="pool1">卡池1</button>
+          <button class="summon-tab" data-pool="pool2">卡池2</button>
+          <button class="summon-tab" data-pool="pool3">卡池3</button>
+        </div>
+      </div>
+      <div class="summon-main">
+        <div class="summon-banner">
+          <div class="summon-banner-title">常驻卡池</div>
+          <div class="summon-banner-sub">获取稀有角色与道具</div>
+        </div>
+        <div class="summon-grid" id="summon-grid"></div>
+        <div class="summon-actions">
+          <button class="primary" id="summon-one">抽一抽</button>
+          <button class="primary" id="summon-ten">抽十抽</button>
+        </div>
+        <div class="summon-result" id="summon-result"></div>
+      </div>
+    </section>
+
+    <section class="character-detail" id="character-detail" aria-hidden="true">
+      <button class="back-button detail-back" data-action="back-character">返回角色页</button>
+      <div class="detail-left">
+        <div class="detail-block">
+          <div class="detail-title">大招</div>
+          <div class="detail-slot" id="detail-ultimate"></div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-title">一技能</div>
+          <div class="detail-slot" id="detail-skill1"></div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-title">二技能</div>
+          <div class="detail-slot" id="detail-skill2"></div>
+        </div>
+      </div>
+      <div class="detail-right">
+        <div class="detail-name" id="detail-name">角色</div>
+        <div class="detail-skins" id="detail-skins"></div>
+        <img class="detail-illustration" id="detail-illustration" src="" alt="" />
+        <button class="like-button" data-action="set-home" aria-label="设为主页立绘">♡</button>
+      </div>
+    </section>
+
+    <section class="avatar-page" id="avatar-page" aria-hidden="true">
+      <div class="avatar-page-header">
+        <button class="back-button" data-action="back-avatar">返回</button>
+        <div class="avatar-title">头像</div>
+      </div>
+      <div class="avatar-page-body">
+        <div class="avatar-card">
+          <div class="avatar-large" id="avatar-large"></div>
+          <div class="avatar-info">
+            <div class="avatar-name">浣月</div>
+            <div class="avatar-level">Lv.100</div>
+            <div class="avatar-progress">
+              <div class="avatar-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+        <div class="avatar-grid">
+          <button class="avatar-option is-active" data-color="#ffc6b0"></button>
+          <button class="avatar-option" data-color="#c9e7ff"></button>
+          <button class="avatar-option" data-color="#e9d4ff"></button>
+          <button class="avatar-option" data-color="#ffe6b0"></button>
+          <button class="avatar-option" data-color="#c8f3d2"></button>
+          <button class="avatar-option" data-color="#f0c5d9"></button>
+        </div>
+      </div>
+      <button class="switch-account" id="switch-account">切换账户</button>
+    </section>
+
+    <section class="auth-page" id="auth-page" aria-hidden="false">
+      <div class="auth-card">
+        <div class="auth-title" id="auth-title">登录</div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-auth="login">登录</button>
+          <button class="auth-tab" data-auth="register">注册</button>
+        </div>
+        <div class="auth-form">
+          <label class="auth-field">
+            <span>用户名</span>
+            <input type="text" id="auth-username" placeholder="输入用户名" />
+          </label>
+          <label class="auth-field">
+            <span>密码</span>
+            <input type="password" id="auth-password" placeholder="输入密码" />
+          </label>
+          <label class="auth-field auth-only-register" id="auth-phone-field">
+            <span>手机号</span>
+            <input type="text" id="auth-phone" placeholder="输入手机号" />
+          </label>
+          <div class="auth-actions">
+            <button class="primary" id="auth-submit">登录</button>
+          </div>
+          <div class="auth-message" id="auth-message"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="account-switch" id="account-switch" aria-hidden="true">
+      <div class="account-card">
+        <div class="account-title">切换账户</div>
+        <div class="account-current">
+          <div class="account-label">当前账户</div>
+          <div class="account-name" id="account-current">-</div>
+        </div>
+        <div class="account-actions">
+          <button class="ghost" id="account-cancel">返回当前账户</button>
+          <button class="primary" id="account-to-auth">登录 / 注册其他账号</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

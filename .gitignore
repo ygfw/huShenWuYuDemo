@@ -1,0 +1,9 @@
+backed/target/
+backed/.idea/
+.idea/
+.vscode/
+*.iml
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
