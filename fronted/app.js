@@ -6,6 +6,7 @@ let homeSkinId = null;
 let characterList = [];
 let authMode = "login";
 let cardPoolMap = new Map();
+let activityBanner = null;
 
 const target = Date.now() + 2 * 60 * 60 * 1000 + 15 * 60 * 1000 + 32 * 1000;
 
@@ -201,8 +202,22 @@ async function submitAuth() {
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      const error = await res.text();
-      throw new Error(error || "请求失败");
+      let message = "请求失败";
+      try {
+        const data = await res.json();
+        if (data && data.message) {
+          message = data.message;
+        } else if (data && data.error) {
+          message = data.error;
+        }
+      } catch {
+        const text = await res.text();
+        if (text) message = text;
+      }
+      if (res.status === 409) {
+        message = "用户名已存在";
+      }
+      throw new Error(message);
     }
     const data = await res.json();
     if (data && data.user && data.token) {
@@ -389,6 +404,7 @@ async function loadCharacters() {
     buildGalleryGrid(list);
     await loadHomeCharacter();
     await loadCardPools();
+    await loadActivityBanner();
   } catch (err) {
     buildCharacterGridFallback();
   }
@@ -867,6 +883,7 @@ setInterval(tick, 1000);
 setInterval(regenStamina, 4000);
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadActivityBanner();
   const stored = getStoredUser();
   if (stored) {
     setAuthenticated(stored);
@@ -926,6 +943,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+async function loadActivityBanner() {
+  try {
+    const res = await fetchWithAuth("/api/activity-banners");
+    if (!res.ok) return;
+    const list = await res.json();
+    if (!Array.isArray(list) || list.length === 0) return;
+    const sorted = [...list].sort((a, b) => {
+      return String(a.bannerKey || "").localeCompare(String(b.bannerKey || ""));
+    });
+    activityBanner = sorted[0];
+    applyActivityBanner();
+  } catch {
+    // ignore
+  }
+}
+
+function applyActivityBanner() {
+  if (!activityBanner?.image) return;
+  const banner = document.querySelector(".banner");
+  if (!banner) return;
+  banner.style.setProperty("--activity-image", `url("${activityBanner.image}")`);
+}
 
 async function loadCardPools() {
   try {

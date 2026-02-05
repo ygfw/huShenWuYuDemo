@@ -21,6 +21,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/character-skins",
             "/api/character-skills",
             "/api/card-pools",
+            "/api/activity-banners",
             "/api/home-character");
 
     private final JwtUtil jwtUtil;
